@@ -1,69 +1,66 @@
 import React, { useState } from "react";
 import TodoItem from "./ToDoItem";
-import '../Static/ToDoList.css'
 
-function ToDoList(){
-    
-    const [tasks, SetTasks] = useState([]);
-    const [newTask, SetNewTask] = useState("");
-  
+function ToDoList() {
+    const [tasks, setTasks] = useState([]);
+    const [newTask, setNewTask] = useState("");
+
     const handleInputChange = (event) => {
-      SetNewTask(event.target.value);
+        setNewTask(event.target.value);
     };
-  
-    const addTodo = () => {
-      if (newTask.trim() !== '') {
-        SetTasks([...tasks, {title: newTask, completed: false }]);
-        SetNewTask('');
-      }
-    };
-  
-    const deleteTodo = (index) => {
-      SetTasks(tasks.filter((tasks, i) => i !== index));
-    };
-  
-    const updateTodo = (index, newTitle) => {
-      if (newTitle.trim()!==''){
-        const updatedtasks = [...tasks];
-        updatedtasks[index].title = newTitle;
-        SetTasks(updatedtasks);
 
-      }
+    const addTodo = () => {
+        if (newTask.trim() !== '') {
+            setTasks([...tasks, { title: newTask, completed: false }]);
+            setNewTask('');
+        }
     };
-  
+
+    const deleteTodo = (index) => {
+        setTasks(tasks.filter((task, i) => i !== index));
+    };
+
+    const updateTodo = (index, newTitle) => {
+        if (newTitle.trim() !== '') {
+            const updatedTasks = [...tasks];
+            updatedTasks[index].title = newTitle;
+            setTasks(updatedTasks);
+        }
+    };
+
     const toggleComplete = (index) => {
-      const updatedtasks = [...tasks];
-      updatedtasks[index].completed = !updatedtasks[index].completed;
-      SetTasks(updatedtasks);
+        const updatedTasks = [...tasks];
+        updatedTasks[index].completed = !updatedTasks[index].completed;
+        setTasks(updatedTasks);
     };
+
     return (
-        <div className="todo-list-container">
-          <h1 className="todo-list-header">Todo List</h1>
-            <input
-              className="todo-input"
-              type="text"
-              value={newTask}
-              onChange={handleInputChange}
-              placeholder="Enter your task"
-            />
-            <button className="add-button" onClick={addTodo}>Add</button>
-            <table className="todo-table">
-              <tbody>
-                {tasks.map((tasks, index) => (
-                  <TodoItem
-                    key={index}
-                    tasks={tasks}
-                    index={index}
-                    toggleComplete={toggleComplete}
-                    updateTodo={updateTodo}
-                    deleteTodo={deleteTodo}
-                  />    
+        <div className="max-w-lg mx-auto p-5 font-sans">
+            <h1 className="text-center mb-5 text-2xl">ToDo App</h1>
+            <div className="flex mb-5">
+                <input
+                    className="w-full mr-2 p-2 border"
+                    type="text"
+                    value={newTask}
+                    onChange={handleInputChange}
+                    placeholder="Enter your task"
+                />
+                <button className="p-2 bg-green-500 text-white" onClick={addTodo}>Add</button>
+            </div>
+            <div className="flex flex-col space-y-2">
+                {tasks.map((task, index) => (
+                    <TodoItem
+                        key={index}
+                        tasks={task}
+                        index={index}
+                        toggleComplete={toggleComplete}
+                        updateTodo={updateTodo}
+                        deleteTodo={deleteTodo}
+                    />
                 ))}
-              </tbody>
-            </table>
+            </div>
         </div>
     );
 }
-    
 
-export default ToDoList
+export default ToDoList;

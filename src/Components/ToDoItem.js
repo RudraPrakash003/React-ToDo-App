@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import '../Static/ToDoList.css';
+import React, { useState } from "react";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { TiTick } from "react-icons/ti";
+import { ImCross } from "react-icons/im";
 
 function TodoItem({ tasks, index, toggleComplete, updateTodo, deleteTodo }) {
-
     const [editMode, setEditMode] = useState(false);
     const [newTitle, setNewTitle] = useState(tasks.title);
 
@@ -18,43 +19,46 @@ function TodoItem({ tasks, index, toggleComplete, updateTodo, deleteTodo }) {
     const handleCancelClick = () => {
         setNewTitle(tasks.title);
         setEditMode(false);
-    }
+    };
     return (
-        <tr>
-            <td>
-                <input
-                    type="checkbox"
-                    checked={tasks.completed}
-                    onChange={() => toggleComplete(index)}
+        <div className="flex items-center justify-between my-2">
+            <input
+                type="checkbox"
+                checked={tasks.completed}
+                onChange={() => toggleComplete(index)}
+                className="mr-4"
                 />
-            </td>
-            <td>
                 {editMode ? (
                     <input
-                    className="edit-input"
+                        className="flex-grow mr-2 border p-2"
                         type="text"
                         value={newTitle}
                         onChange={handleInputChange}
-                        // autoFocus
                     />
-                    ) : (
-                    <span className={tasks.completed ? "completed-task" : ""}>
+                ) : (
+                    <span className={`flex-grow text-lg ${tasks.completed ? "line-through" : ""} mr-2`}>
                         {tasks.title}
                     </span>
                 )}
-            </td>
-            <td className="button-container">
-                {editMode ? (
-                    <div className="edit-actions">
-                        <button className="update-button" onClick={handleUpdateClick}>Update</button>
-                        <button className="cancel-button" onClick={handleCancelClick}>Cancel</button>
-                    </div>
+
+                <div className="flex item-center space-x-3">
+                    {editMode ? (
+                        <>
+                            <div className="relative top-[-5px]">
+                                <TiTick role="button" size={30} onClick={handleUpdateClick} />
+                            </div>
+                            <div className="relative top-[1px]">
+                                <ImCross role="button" size={17} onClick={handleCancelClick} />
+                            </div>
+                        </>
                     ) : (
-                        <button className="edit-button" onClick={() => setEditMode(true)}>Edit</button>
-                )}
-                <button className="delete-button" onClick={() => deleteTodo(index)}>Delete</button>
-            </td>
-        </tr>
+                        <>
+                            <MdEdit role="button" size={23} onClick={() => setEditMode(true)} />
+                            <MdDelete role="button" size={23} onClick={() => deleteTodo(index)} />
+                        </>
+                    )}
+                </div>
+        </div>
     );
 }
 
